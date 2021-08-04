@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+  
+  <context:annotation-config/>
+  <context:component-scan base-package="com.baeldung.applicationcontext"/> <!-- Kjo ben component skanimin  -->
+  <context:property-placeholder location="classpath:sport.properties" /> <!--  vendos ku eshte sport.properties -->
+  	<!-- Dependendy injection configuration in XML File -->
+  	
+  	<bean id="myFortuneService" class="demo.HappyFortuneService">
+  	</bean>
+  	
+	<bean id="myCoach" class="demo.TrackCoach" scope="singleton"> <!-- bean scopes into the scope="" -->
+		<constructor-arg ref="myFortuneService"/> <!-- injecting the dependency using constructor injection -->
+	</bean>
+		<bean id="myCricketCoach" class="demo.CricketCoach" scope="singleton" init-method="startUpBeanLife" destroy-method="destroyBeanLife">
+		  <property name="fortuneService" ref="myFortuneService"/> <!-- injecting the dependency using setter injection, springu e bo vet -->
+		  <!--  Value for literal values, ref for injecting beans -->
+		  <property name="email" value="${foo.email}" />
+		  <property name="team" value="${foo.team}" />
+	</bean>
+
+</beans>
